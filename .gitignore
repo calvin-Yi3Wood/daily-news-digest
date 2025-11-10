@@ -1,0 +1,269 @@
+# =============================================
+# Git忽略文件配置
+# =============================================
+# 说明: 防止敏感信息和临时文件提交到Git
+# =============================================
+
+# ===========================================
+# 环境变量和密钥（最重要！）
+# ===========================================
+.env
+.env.*
+*.env
+!.env.example  # 保留.env.example模板文件
+
+# 密钥文件
+*.key
+*.pem
+secrets/
+credentials/
+
+# ===========================================
+# Python相关
+# ===========================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# ===========================================
+# IDE和编辑器
+# ===========================================
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Eclipse
+.project
+.pydevproject
+
+# ===========================================
+# 日志文件
+# ===========================================
+logs/
+*.log
+log/
+*.log.*
+
+# ===========================================
+# 缓存文件
+# ===========================================
+cache/
+*.cache
+.cache/
+tmp/
+temp/
+*.tmp
+
+# ===========================================
+# 数据和存档（根据需要调整）
+# ===========================================
+data/
+archives/
+*.csv
+*.json  # 如果需要提交配置JSON，则注释此行
+*.db
+*.sqlite
+*.sqlite3
+
+# ===========================================
+# 系统文件
+# ===========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# ===========================================
+# 备份文件
+# ===========================================
+*.bak
+*.backup
+*.old
+backup/
+
+# ===========================================
+# 压缩文件（根据需要调整）
+# ===========================================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ===========================================
+# Node.js（如果项目中使用）
+# ===========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ===========================================
+# 项目特定
+# ===========================================
+# GitHub Actions本地测试工具
+.github/workflows/*.local.yml
+
+# 测试数据
+test_data/
+fixtures/
+
+# 临时输出
+output/
+results/
+
+# ===========================================
+# 注意事项
+# ===========================================
+# 1. 确保.env文件已被忽略（防止泄露API密钥）
+# 2. .env.example应该被提交（作为配置模板）
+# 3. logs/和cache/目录不提交，但可以创建空的.gitkeep
+# 4. 如果需要提交某些被忽略的文件，使用 git add -f
+# ===========================================

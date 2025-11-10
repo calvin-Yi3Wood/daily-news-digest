@@ -1,0 +1,68 @@
+name: Daily News Digest
+
+# 触发条件
+on:
+  # 定时触发: 每天UTC 23:55 (北京时间7:55)
+  # ⚠️ 提前5分钟启动，确保8:00准时推送
+  # 执行流程: 7:55启动 → 7:56环境准备 → 7:57-8:02脚本运行 → 8:00推送完成
+  schedule:
+    - cron: '55 23 * * *'
+
+  # 允许手动触发
+  workflow_dispatch:
+
+# 任务定义
+jobs:
+  run-daily-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. 设置Python环境
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. 创建logs目录
+      - name: Create logs directory
+        run: mkdir -p logs
+
+      # 5. 运行主程序
+      - name: Run daily news digest
+        env:
+          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+          WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: python main.py
+
+      # 6. 上传日志（可选，失败时查看）
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-${{ github.run_number }}
+          path: logs/
+          retention-days: 7
+
+      # 7. 通知（可选，运行结果通知）
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Daily news digest failed!"
+          echo "Check logs at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
