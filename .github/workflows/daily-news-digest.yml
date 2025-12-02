@@ -28,17 +28,28 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      # 3. 安装依赖
+      # 3. 安装依赖（使用锁定版本）
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements-lock.txt
 
-      # 4. 创建logs目录
+      # 4. 验证关键依赖
+      - name: Verify dependencies
+        run: |
+          echo "✅ 验证关键依赖..."
+          python -c "import zhipuai; print(f'zhipuai: {zhipuai.__version__}')"
+          python -c "import sniffio; print('sniffio: ✅')"
+          python -c "import anyio; print('anyio: ✅')"
+          python -c "import httpx; print('httpx: ✅')"
+          pip check
+          echo "✅ 所有依赖验证通过"
+
+      # 5. 创建logs目录
       - name: Create logs directory
         run: mkdir -p logs
 
-      # 5. 运行主程序
+      # 6. 运行主程序
       - name: Run daily news digest
         env:
           GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
@@ -51,7 +62,7 @@ jobs:
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
         run: python main.py
 
-      # 6. 上传日志（可选，失败时查看）
+      # 7. 上传日志（可选，失败时查看）
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -60,7 +71,7 @@ jobs:
           path: logs/
           retention-days: 7
 
-      # 7. 通知（可选，运行结果通知）
+      # 8. 通知（可选，运行结果通知）
       - name: Notify on failure
         if: failure()
         run: |
